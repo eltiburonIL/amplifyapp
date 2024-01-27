@@ -7,6 +7,7 @@ function App() {
   useEffect(() => {
     fetch('https://api.exchangerate-api.com/v4/latest/USD')
       .then(response => response.json())
+      .then(console.log('currency rates'))
       .then(data => setCurrencyRates(data.rates));
   }, []);
 
