@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import WorldTime from 'react-world-time';
+import CurrencyExchange from 'react-currency-exchange';
 
 function App() {
+  const [currencyRates, setCurrencyRates] = useState({});
+
+  useEffect(() => {
+    fetch('https://api.exchangerate-api.com/v4/latest/USD')
+      .then(response => response.json())
+      .then(data => setCurrencyRates(data.rates));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <h2>London</h2>
+        <WorldTime timezone="Europe/London" />
+        <CurrencyExchange from="USD" to="GBP" rates={currencyRates} amount={1} />
+      </div>
+      <div>
+        <h2>Tel Aviv</h2>
+        <WorldTime timezone="Asia/Jerusalem" />
+        <CurrencyExchange from="USD" to="ILS" rates={currencyRates} amount={1} />
+      </div>
+      <div>
+        <h2>Sunnyvale</h2>
+        <WorldTime timezone="America/Los_Angeles" />
+        <CurrencyExchange from="USD" to="USD" rates={currencyRates} amount={1} />
+      </div>
     </div>
   );
 }
